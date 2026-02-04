@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск в Google Sheets</title>
+</head>
+<body>
+
+    <h1>Поиск по числам</h1>
+    <form id="searchForm">
+        <label for="searchNumber">Введите число:</label>
+        <input type="text" id="searchNumber" name="searchNumber" required>
+        <button type="submit">Поиск</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        // Инициализация Google API
+        function initApiClient() {
+            gapi.client.init({
+                'apiKey': 'AIzaSyDVSVgbHiwtgt3boX2oPbXltaAGmyw1mCU', // Ваш ключ API
+            }).then(function () {
+                console.log("API Client Initialized");
+
+                // Теперь можно загружать API Google Sheets
+                gapi.client.load('sheets', 'v4', function() {
+                    console.log("Google Sheets API Loaded");
+                });
+            }).catch(function(error) {
+                console.error("Ошибка при инициализации API:", error);
+                alert('Ошибка при инициализации API: ' + error.message);
+            });
+        }
+
+        // Получение данных из Google Sheets
+        function getSheetData(sheetId, range) {
+            return gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: sheetId,
+                range: range,
+            }).then(function(response) {
+                return response.result.values;
+            }).catch(function(error) {
+                console.error("Ошибка при запросе данных из Google Sheets:", error);
+                alert('Ошибка при запросе данных: ' + error.message);
+            });
+        }
+
+        // Обработчик формы поиска
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let number = document.getElementById('searchNumber').value;
+            let sheetId = 'ВАШ_ИДЕНТИФИКАТОР_Таблицы';  // Замените на ваш ID таблицы Google Sheets
+            let range = 'Sheet1!A:B'; // Укажите диапазон (все строки в колонках A и B)
+
+            // Показать, что запрос начался
+            document.getElementById('result').innerText = 'Идет поиск...';
+
+            getSheetData(sheetId, range).then(function(values) {
+                let found = false;
+
+                if (values) {
+                    for (let i = 0; i < values.length; i++) {
+                        if (values[i][0] == number) {
+                            // Если совпадение найдено
+                            document.getElementById('result').innerText = 'Информация: ' + values[i][1];
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!found) {
+                    document.getElementById('result').innerText = 'Совпадений не найдено.';
+                }
+            }).catch(function(error) {
+                console.error('Ошибка при обработке данных:', error);
+                document.getElementById('result').innerText = 'Ошибка при обработке данных.';
+            });
+        });
+
+        // Загружаем и инициализируем Google API
+        gapi.load('client', initApiClient);
+    </script>
+
+</body>
+</html>
