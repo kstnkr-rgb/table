@@ -3,18 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поиск в CSV файле</title>
+    <title>Поиск по номеру телефона</title>
+    <style>
+        body {
+            background-color: #ADD8E6; /* Голубой фон */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Поиск по данным в CSV файле</h1>
-    <form id="searchForm">
-        <label for="searchNumber">Введите число:</label>
-        <input type="text" id="searchNumber" name="searchNumber" required>
-        <button type="submit">Поиск</button>
-    </form>
+    <div class="container">
+        <h1>Введите номер телефона, который привязан к Клубу Друзей</h1>
+        <form id="searchForm">
+            <label for="searchNumber">Номер телефона:</label>
+            <input type="text" id="searchNumber" name="searchNumber" required>
+            <button type="submit">Поиск</button>
+        </form>
 
-    <p id="result"></p>
+        <p id="result"></p>
+    </div>
 
     <script>
         document.getElementById('searchForm').addEventListener('submit', function(event) {
@@ -35,7 +99,7 @@
                     for (let row of rows) {
                         let columns = row.split(','); // Разделяем строки на колонки (для CSV)
                         if (columns[0] === number) { // Если первое значение в строке совпадает с введённым числом
-                            resultElement.innerText = `Количество билетов, доступных для розыгрыша: ${columns[1]}`; // Отображаем данные из второй колонки
+                            resultElement.innerText = `Информация: ${columns[1]}`; // Отображаем данные из второй колонки
                             found = true;
                             break;
                         }
@@ -46,12 +110,3 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Ошибка при чтении файла:', error);
-                    resultElement.innerText = 'Ошибка при чтении данных.';
-                });
-        });
-    </script>
-
-</body>
-</html>
-
