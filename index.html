@@ -110,3 +110,11 @@
                     }
                 })
                 .catch(error => {
+                    console.error('Ошибка при чтении файла:', error);
+                    resultElement.innerText = 'Ошибка при чтении данных.';
+                });
+        });
+    </script>
+
+</body>
+</html>
