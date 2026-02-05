@@ -1,3 +1,4 @@
+<!-- Версия 1 -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -99,7 +100,7 @@
                     for (let row of rows) {
                         let columns = row.split(','); // Разделяем строки на колонки (для CSV)
                         if (columns[0] === number) { // Если первое значение в строке совпадает с введённым числом
-                            resultElement.innerText = `Информация: ${columns[1]}`; // Отображаем данные из второй колонки
+                            resultElement.innerText = `Количество ваших билетов в следующем розыгрыше: ${columns[1]}`; // Обновленный текст
                             found = true;
                             break;
                         }
